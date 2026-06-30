@@ -15,6 +15,20 @@
             echo '</div>';
         }
         
+        // Check if the transient is set for skipped shipping methods (Phase 3)
+        if ( $skipped_methods = get_transient( 'migratestore_import_warning' ) ) {
+            delete_transient( 'migratestore_import_warning' );
+
+            if ( is_array( $skipped_methods ) && ! empty( $skipped_methods ) ) {
+                echo '<div class="notice notice-warning is-dismissible">';
+                echo '<p>'
+                    . esc_html__( 'The following shipping methods were skipped because they are not available on this site:', 'migratestore' )
+                    . ' ' . esc_html( implode( ', ', $skipped_methods ) )
+                    . '</p>';
+                echo '</div>';
+            }
+        }
+        
         // Check if the transient is set for success
         if ($success_data = get_transient('migratestore_import_success')) {
             delete_transient('migratestore_import_success');
@@ -27,17 +41,24 @@
             echo '<p>' . esc_html__('Migrate Store has imported your file successfully.', 'migratestore') . '</p>';
             
             echo '<div class="action-links">';
-            echo '<a href="https://wordpress.org/support/plugin/migratestore/reviews/#new-post" target="_blank" class="review-link">';
-            echo '<span class="dashicons dashicons-star-filled"></span>';
-            echo esc_html__('Leave a Review', 'migratestore');
-            echo '</a>';
-            
-            if (!empty($success_data['type_data'])) {
+
+			if (!empty($success_data['type_data'])) {
                 echo '<a href="' . esc_url($success_data['type_data']['url']) . '" class="verify-link">';
                 echo '<span class="dashicons dashicons-visibility"></span>';
                 echo esc_html($success_data['type_data']['message']);
                 echo '</a>';
             }
+			
+			echo '<a href="https://ko-fi.com/nagdy" target="_blank" class="review-link">';
+			echo '<span class="dashicons dashicons-star-filled"></span>';
+			echo esc_html__('Donate', 'migratestore');
+			echo '</a>';
+			
+            echo '<a href="https://wordpress.org/support/plugin/migratestore/reviews/#new-post" target="_blank" class="review-link">';
+            echo '<span class="dashicons dashicons-star-filled"></span>';
+            echo esc_html__('Leave a Review', 'migratestore');
+            echo '</a>';
+			
             echo '</div>'; // .action-links
             
             echo '</div>'; // .success-message

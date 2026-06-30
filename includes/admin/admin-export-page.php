@@ -47,13 +47,13 @@ $export_options = array(
 ?>
 <div class="wrap migratestore">
     <div class="ms-content">
-        <h1><?php _e('Export Options', 'migratestore'); ?></h1>
+        <h1><?php esc_html_e('Export Options', 'migratestore'); ?></h1>
 
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <input type="hidden" name="action" value="migratestore_export_action">
             <?php wp_nonce_field('migratestore_export_action_nonce'); ?>
 
-            <div class="ms-options-grid">
+            <div class="ms-options-grid" data-instructions="<?php esc_attr_e('Click on a card to select an option', 'migratestore'); ?>">
                 <?php foreach ($export_options as $option => $info) : ?>
                     <div class="ms-option-card">
                         <input type="radio"

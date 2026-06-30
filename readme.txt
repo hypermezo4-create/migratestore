@@ -1,14 +1,15 @@
 === Migrate Store: Export and Import WooCommerce Settings ===
 Contributors: nagdy
-Tags: woocommerce, migration, woocommerce export, export shipping zones
+Tags: woocommerce, woocommerce export, export shipping zones
 Requires PHP: 7.4
 Requires at least: 6.0
-Tested up to: 6.5
-Stable tag: 1.1.4
+Tested up to: 7.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Donate link: https://ko-fi.com/nagdy
 
-Migrate Store is a WooCommerce plugin for hassle-free migration of settings between sites, simplifying and accelerating the setup process. You can use Migrate Store plugin to export WooCommerce Settings including Shipping Zones and import them to a different website.
+Migrate Store is a WooCommerce plugin for hassle-free migration of settings between sites, simplifying and accelerating the setup process.
 
 == Description ==
 
@@ -39,6 +40,7 @@ MigrateStore offers a seamless solution to transfer your settings from an existi
         - Reset password
         - New account
 7. WooCommerce → Settings → Advanced → Page setup → Checkout endpoints & Account endpoints
+8. WooCommerce → Settings → Shipping → Classes
 
 Move your WooCommerce settings smoothly and effortlessly with MigrateStore!
 
@@ -61,6 +63,34 @@ Post detailed information about the issue in the [support forum](http://wordpres
 1. Plugin Settings.
 
 == Changelog ==
+
+= 1.2.0 =
+* Compatibility: Tested with WordPress 7.0.
+* Compatibility: PHP 8.2 / 8.3 compatible; minimum PHP 7.4.
+* Security: Added capability checks (manage_woocommerce) to all export and import handlers.
+* Security: Validated ZIP uploads (MIME type, size limit) and guaranteed temp-file cleanup on success and failure.
+* Fix: Unified option field names (option_name/option_value) across all exporters and importers.
+* Fix: Removed a duplicate entry in the email settings exporter.
+* Fix: Replaced `date()` with `gmdate()` in WooCommerce exporters to satisfy `WordPress.DateTime` Plugin Check (timezone-independent export filenames).
+* Fix: Replaced direct `readfile()` in the export download with the `WP_Filesystem` API to satisfy `WordPress.WP.AlternativeFunctions` Plugin Check.
+* Fix: Removed unprepared dead query in `ShippingZonesExporter::get_data()` to satisfy `WordPress.DB` Plugin Check (method returns `null` as before; no behavior change).
+* Fix: Shipping method export is no longer limited to the three built-in types; all registered shipping methods are now exported. Unrecognized methods are reported on import.
+
+= 1.1.9 =
+* WordPress 6.9 compatibility.
+
+= 1.1.8 =
+* Fixed: Internationalization for missed string.
+
+= 1.1.7 =
+* Added: Check for ZipArchive dependency to prevent fatal errors.
+
+= 1.1.6 =
+* WooCommerce 9.7 compatibility.
+
+= 1.1.5 =
+* Added: Export and Import Shipping Classes.
+* Updated: Design.
 
 = 1.1.4 =
 * WordPress 6.7 compatibility.

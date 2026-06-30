@@ -4,13 +4,19 @@
  * Plugin Name: Migrate Store: Export and Import WooCommerce Settings
  * Plugin URI: https://migratestore.com
  * Description: Migrate Store is a plugin that allows you to export WooCommerce settings and import them into another website. Saving your time and effort.
- * Version: 1.1.4
+ * Version: 1.2.0
+ * Requires at least: 6.0
+ * Tested up to: 7.0
+ * Requires PHP: 7.4
+ * Requires Plugins: woocommerce
  * Author: Nagdy
  * Author URI: https://nagdy.me
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: migratestore
  * Domain Path: /languages
+ * WC requires at least: 7.9
+ * WC tested up to: 9.7
  */
 
 use MigrateStore\MigrateStore;
@@ -20,15 +26,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-const MIGRATESTORE_VERSION = '1.1.3';
+const MIGRATESTORE_VERSION = '1.2.0';
 define( 'MIGRATESTORE_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MIGRATESTORE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'MIGRATESTORE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 require_once MIGRATESTORE_PLUGIN_DIR_PATH . 'lib/autoload.php';
 
+// Check dependencies before initializing the plugin
 $checker = new Plugins_Checker();
-if ( $checker->is_woocommerce_activated() === false) {
+if ( ! $checker->check_dependencies() ) {
+	// Optionally deactivate the plugin if dependencies aren't met
+	if ( ! function_exists( 'deactivate_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+	deactivate_plugins( plugin_basename( __FILE__ ) );
+	// Return early to prevent plugin initialization
 	return;
 }
 
